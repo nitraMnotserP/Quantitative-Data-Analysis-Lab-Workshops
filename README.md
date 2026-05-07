@@ -8,6 +8,7 @@ Workshops include:
 - **Analyses of Complex Survey Data**
 - **Data Visualization with ggplot2**
 - **Introduction to R and RStudio**
+- **Propensity Score Matching in R**
 
 ---
 
