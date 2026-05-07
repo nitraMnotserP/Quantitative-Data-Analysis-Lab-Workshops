@@ -2,7 +2,7 @@
 
 This repository contains materials for workshops I developed for the **University at Buffalo's Quantitative and Qualitative Data Analysis Lab (QQDAL) annual workshop series**.
 
-Workshops include:
+## Workshops Included
 
 - **Advanced Analyses in R**
 - **Analyses of Complex Survey Data**
@@ -89,3 +89,34 @@ This workshop introduces the **fundamentals of programming and statistical analy
 - Basic descriptive statistics
 - Correlations
 - Simple linear regression
+
+---
+
+## Propensity Score Matching in R
+
+This workshop provides a practical introduction to **propensity score methods for causal inference** using observational data. The workshop emphasizes applied implementation, diagnostics, and extensions for missing data and complex survey designs.
+
+### Topics Covered
+
+- Causal inference framework (counterfactuals, ATT vs. ATE)
+- Selection bias and naive vs. adjusted treatment effects
+- Propensity score estimation using logistic regression
+- **Nearest neighbor matching**, including calipers and exact matching
+- **Mahalanobis distance matching**
+- Assessing covariate balance using standardized mean differences and variance ratios
+- Visual balance diagnostics using **Love plots**
+- Outcome analysis using matched samples and matching weights
+- Regression adjustment for remaining imbalance
+
+### Extensions Covered
+
+- Propensity score matching with **multiple imputation** using `mice` and `MatchThem`
+- Pooling treatment effect estimates across imputed datasets
+- Incorporating **survey weights** into propensity score matching
+- Design-based outcome models using `survey` and `mitools`
+- Estimation of **odds ratios** and **average marginal effects**
+
+### Data Sources
+
+- Simulated data: Afterschool tutoring intervention
+- Real data: Public-use **Education Longitudinal Study of 2002 (ELS:2002)**
