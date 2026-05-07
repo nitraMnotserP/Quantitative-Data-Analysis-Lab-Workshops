@@ -29,7 +29,7 @@ library(RSQLite)
 library(patchwork)
 
 ##set your working directory to where you saved the data I sent you:
-setwd("~/Documents/QQDAL/Workshops/Propensity Score Matching")
+setwd("~/Documents/QQDAL/Workshops/Propensity_Score_Matching_Workshop ")
 
 ##This is data I simulated for our initial matching models: an after school tutoring program with the aim of raising achievement (ATT)
 data <- read_csv("PSM_sim_data.csv")
@@ -46,6 +46,7 @@ data <- data %>%
     urbanicity = as.factor(urbanicity),
     treatment = as.factor(treatment)
   )
+
 
 ##Verify
 data %>% 
@@ -170,7 +171,7 @@ els %>%
   count()
 
 ##For demonstration purposes only!
-##Remove NAs for this portion of our discussion becasue NAs are not allowed on DV or IVs
+##Remove NAs for this portion of our discussion because NAs are not allowed on DV or IVs
 els.lw <- els %>%
   drop_na()
 
@@ -347,7 +348,7 @@ love.plot(m.imputed,
           var.order = "unadjusted",
           title = "Balance Across Imputed Datasets")
 
-
+bal.tab(m.imputed)
 ###Estimate the Treatment Effect (Outcome Analysis)--we will use a glm() this time 
 ##as we will look at the treatment on college enrollment
 ##We use the with() from the mice package to pool our estimates across imputations:
@@ -368,10 +369,10 @@ summary(pooled_results, conf.int = TRUE, exponentiate = TRUE)
 ##First, This is how I imputed the data using the futuremice(), this enables parallel processing 
 ##and greatly speeds up the process (will take around 1 min)
 ##if you often have RAM issues on your computer, I don't recommend this.
-#els.imp <- els %>% 
- # select(STU_ID, Prep_Course, BYSES1, BYTXMSTD, BYSCTRL, BYURBAN, BY10FLP, 
-  #       BYSEX, BYRACE, Enrolled, F3BYPNLWT, PSU, STRAT_ID) %>% 
-   # futuremice(m = 5, meth = "pmm", parallelseed = 12345) 
+els.imp <- els %>% 
+  select(STU_ID, Prep_Course, BYSES1, BYTXMSTD, BYSCTRL, BYURBAN, BY10FLP, 
+         BYSEX, BYRACE, Enrolled, F3BYPNLWT, PSU, STRAT_ID) %>% 
+    futuremice(m = 5, meth = "pmm", parallelseed = 12345) 
 
 ###Read in the imputed data:
 imp_long <- read.csv("els_imp.csv")
@@ -453,9 +454,12 @@ impdata <- imputationList(imp_list,
 ##create BRR survey deign object with imputation list data
 els.svy <-  svydesign(ids = ~PSU, 
                       strata = ~STRAT_ID, 
-                      weights = ~final_wt, 
+                      weights = ~F3BYPNLWT, 
                       data = impdata, 
                       nest=TRUE)
+
+els.svy.matched.only <- subset(els.svy, weights == 1)
+
 
 ##Calculate the effect using a design-based logistic regression
 mod1 <- with(els.svy,
